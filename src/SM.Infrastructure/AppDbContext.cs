@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SM.Domain.Entities;
+using SM.Infrastructure.EntityTypeConfigurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,13 @@ namespace SM.Infrastructure
     {
         public DbSet<Category> Categories { get; set; }
         
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { } 
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            base.OnModelCreating(modelBuilder);
+        }
         
 
 
