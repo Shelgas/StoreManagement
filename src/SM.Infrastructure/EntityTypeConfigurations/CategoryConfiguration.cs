@@ -14,8 +14,15 @@ namespace SM.Infrastructure.EntityTypeConfigurations
         public void Configure(EntityTypeBuilder<Category> builder)
         {
             builder.HasKey(category => category.Id);
-            builder.HasIndex(category => category.Id);
+            builder.HasIndex(category => new {category.Id, category.Name}).IsUnique();
             builder.Property(category => category.Name).HasMaxLength(255);
+            builder.HasData(
+                new Category { Id = 1, Name = "Электроника и гаджеты" },
+                new Category { Id = 2, Name = "Мода и стиль" },
+                new Category { Id = 3, Name = "Дом и сад" },
+                new Category { Id = 4, Name = "Красота и уход" },
+                new Category { Id = 5, Name = "Спорт и отдых" }
+                );
         }
     }
 }
