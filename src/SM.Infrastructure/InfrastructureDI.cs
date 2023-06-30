@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SM.Application.Interfaces;
+using SM.Infrastructure.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +21,7 @@ namespace SM.Infrastructure
             {
                 options.UseNpgsql(confString);
             });
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             return services;
         }
     }
