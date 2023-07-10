@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SM.Application.Interfaces;
+using SM.Domain.Entities;
 
 namespace SM.WebUI.Controllers
 {
@@ -13,8 +14,23 @@ namespace SM.WebUI.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var result = await _repository.CategoryRepository.GetAllCategorysAsync();
-            return View(result);
+            return View(await _repository.CategoryRepository.GetAllCategorysAsync());
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Category category)
+        {
+            _repository.CategoryRepository.Add(category);
+            await _repository.SaveAsync();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+
     }
 }
