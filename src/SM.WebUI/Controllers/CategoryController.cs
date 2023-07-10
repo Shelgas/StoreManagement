@@ -20,6 +20,10 @@ namespace SM.WebUI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Category category)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(category);
+            }
             _repository.CategoryRepository.Add(category);
             await _repository.SaveAsync();
             return RedirectToAction("Index");

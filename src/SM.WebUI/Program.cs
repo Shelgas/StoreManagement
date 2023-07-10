@@ -1,4 +1,5 @@
 using SM.Infrastructure;
+using SM.Application;
 
 namespace SM.WebUI
 {
@@ -13,7 +14,7 @@ namespace SM.WebUI
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddInfastructure(config);
-            var a = config.GetConnectionString("DefaultConnection");
+            builder.Services.AddApplication();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
