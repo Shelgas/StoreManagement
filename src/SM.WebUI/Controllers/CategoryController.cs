@@ -64,5 +64,37 @@ namespace SM.WebUI.Controllers
                 return StatusCode(500, $"Something went wrong inside GetOwnerById action: {ex.Message}");
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Category category)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(category);
+            }
+            _repository.CategoryRepository.Delete(category);
+            await _repository.SaveAsync();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var category = await _repository.CategoryRepository.GetCategoryByIdAsync(id);
+                if (category == null)
+                {
+                    return NotFound();
+                }
+                _repository.CategoryRepository.Delete(category);
+                await _repository.SaveAsync();
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Something went wrong inside GetOwnerById action: {ex.Message}");
+            }
+        }
     }
 }
