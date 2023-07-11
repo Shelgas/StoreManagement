@@ -13,7 +13,7 @@ namespace SM.Application.Validation
         public CategoryValidator()
         {
             RuleFor(x => x.Name).NotEmpty().NotNull()
-                .Length(1, 200);
+                .Length(3, 200).WithMessage("Incorrect Name");
         }
     }
 }
