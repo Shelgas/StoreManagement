@@ -15,6 +15,7 @@ namespace SM.WebUI
             builder.Services.AddControllersWithViews();
             builder.Services.AddInfastructure(config);
             builder.Services.AddApplication();
+                
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -34,7 +35,7 @@ namespace SM.WebUI
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

@@ -2,8 +2,9 @@
 using SM.WebUI.Models;
 using System.Diagnostics;
 
-namespace SM.WebUI.Controllers
+namespace SM.WebUI.Areas.Customer.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

@@ -16,5 +16,7 @@ namespace SM.Domain.Entities
         [DisplayName("Название категории")]
         public string Name { get; set; }
 
+        public List<Product> Products { get; set; }
+
     }
 }

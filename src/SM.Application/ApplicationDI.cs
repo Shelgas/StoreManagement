@@ -6,6 +6,7 @@ using SM.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ namespace SM.Application
         public static IServiceCollection AddApplication(this IServiceCollection services) 
         {
             services.AddFluentValidationAutoValidation();
-            services.AddScoped<IValidator<Category>, CategoryValidator>();
+            services.AddValidatorsFromAssemblies(new[] { Assembly.GetExecutingAssembly() });
             return services;
         }
     }

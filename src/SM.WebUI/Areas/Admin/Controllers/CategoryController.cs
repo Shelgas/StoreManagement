@@ -2,8 +2,9 @@
 using SM.Application.Interfaces;
 using SM.Domain.Entities;
 
-namespace SM.WebUI.Controllers
+namespace SM.WebUI.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly IRepositoryWrapper _repository;
@@ -59,7 +60,7 @@ namespace SM.WebUI.Controllers
                 }
                 return View(category);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 return StatusCode(500, $"Something went wrong inside GetOwnerById action: {ex.Message}");
             }
