@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SM.WebUI.Models;
+using SM.Application.Models;
 using System.Diagnostics;
 
 namespace SM.WebUI.Areas.Customer.Controllers

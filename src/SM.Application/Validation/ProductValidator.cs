@@ -1,4 +1,5 @@
 using FluentValidation;
+using SM.Application.Models.DTO;
 using SM.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,13 @@ using System.Threading.Tasks;
 
 namespace SM.Application.Validation
 {
-    public class ProductValidator : AbstractValidator<Product>
+    public class ProductValidator : AbstractValidator<ProductCreateDTO>
     {
         public ProductValidator()
         {
             RuleFor(x => x.Name).NotEmpty().NotNull().Length(3, 255);
             RuleFor(x => x.Price).NotEmpty().NotNull();
             RuleFor(x => x.BrandName).NotEmpty().NotNull();
-
         }
     }
 }

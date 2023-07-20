@@ -15,7 +15,7 @@ namespace SM.Domain.Entities
         public string BrandName { get; set; }
         public string? ImgURL { get; set; }
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
 
     }
 }

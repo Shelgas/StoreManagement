@@ -11,9 +11,11 @@ namespace SM.Infrastructure.Repository
 
     {
         private CategoryRepository? _categoryRepository;
+        private ProductRepository? _productRepository;
         private readonly AppDbContext _appDbContext;
 
         public ICategoryRepository CategoryRepository => _categoryRepository ??= new CategoryRepository(_appDbContext);
+        public IProductRepository ProductRepository => _productRepository ??= new ProductRepository(_appDbContext);
 
 
 

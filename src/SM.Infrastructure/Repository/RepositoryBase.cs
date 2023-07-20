@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SM.Infrastructure.Repository
 {
-    internal abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
+    public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
     {
         protected readonly AppDbContext _context;
 

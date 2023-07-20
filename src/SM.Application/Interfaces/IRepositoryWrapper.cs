@@ -9,6 +9,7 @@ namespace SM.Application.Interfaces
     public interface IRepositoryWrapper
     {
         ICategoryRepository CategoryRepository { get; }
+        IProductRepository ProductRepository { get; }
         Task SaveAsync();
     }
 }

@@ -1,0 +1,47 @@
+﻿@model ProductCreateDTO
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary"> Create Product</h2>
+            <hr/>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Name" class="p-0"></label>
+            <input asp-for="Name" type="text" class="form-control" />
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Description" class="p-0"></label>
+            <input asp-for="Description" type="text" class="form-control" />
+            <span asp-validation-for="Description"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="BrandName" class="p-0"></label>
+            <input asp-for="BrandName" type="text" class="form-control" />
+            <span asp-validation-for="BrandName"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Price" class="p-0"></label>
+            <input asp-for="Price" type="text" class="form-control" />
+            <span asp-validation-for="Price"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <select asp-items="ViewBag.CategoryList" asp-for="CategoryId" class="form-select">
+                <option disabled selected>--Select Category--</option>
+            </select>
+            <label class="p-0">Select</label>
+            <span asp-validation-for="CategoryId"></span>
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary form-control">Create</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary form-control" >
+                    Back to List
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
