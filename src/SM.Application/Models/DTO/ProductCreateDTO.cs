@@ -13,7 +13,6 @@ namespace SM.Application.Models.DTO
         public decimal Price { get; set; }
         public string BrandName { get; set; }
         public string? ImgURL { get; set; }
-        public string CategoryName { get; set; }
         public int CategoryId { get; set; }
 
 
@@ -21,9 +20,7 @@ namespace SM.Application.Models.DTO
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Product, ProductCreateDTO>()
-                .ForMember(d => d.CategoryName, 
-                    opt => opt.MapFrom(src => src.Category.Name));
-            profile.CreateMap<ProductCreateDTO, Product>();
+                .ReverseMap();
         }
     }
 }

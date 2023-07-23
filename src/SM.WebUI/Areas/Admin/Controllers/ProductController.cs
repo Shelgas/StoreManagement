@@ -12,27 +12,50 @@ namespace SM.WebUI.Areas.Admin.Controllers
     {
         private readonly IRepositoryWrapper _repository;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IRepositoryWrapper repository, IMapper mapper)
+        public ProductController(IRepositoryWrapper repository, IMapper mapper,
+            IWebHostEnvironment webHostEnvironment)
         {
             _repository = repository;
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
         public async Task<IActionResult> Index()
         {
-            return View(_mapper.Map<List<ProductCreateDTO>>(await _repository.ProductRepository.GetAllProductsAsync()));
+            return View(await _repository.ProductRepository.GetAllProductsAsync());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductCreateDTO productDTO)
+        public async Task<IActionResult> Create(ProductCreateDTO productDTO, IFormFile? file)
         {
             ViewBag.CategoryList = (await _repository.CategoryRepository.GetAllCategorysAsync()).Select(u => new SelectListItem
             {
                 Text = u.Name,
                 Value = u.Id.ToString()
             });
-            //if (!ModelState.IsValid)
-            //    return View(productDTO);
+
+
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+            if (file != null)
+            {
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string productPath = Path.Combine(wwwRootPath, @"images\product");
+
+                using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
+                }
+
+                productDTO.ImgURL = @"\images\product\" + fileName;
+            }
+
+            if (!ModelState.IsValid)
+            {
+                var e = ModelState.Values.SelectMany(v => v.Errors);
+                return View(productDTO);
+
+            }
             var product = _mapper.Map<Product>(productDTO);
         
 
@@ -53,13 +76,13 @@ namespace SM.WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Product product)
+        public async Task<IActionResult> Edit(ProductCreateDTO productDTO)
         {
             if (!ModelState.IsValid)
             {
-                return View(product);
+                return View(productDTO);
             }
-            _repository.ProductRepository.Update(product);
+            _repository.ProductRepository.Update(_mapper.Map<Product>(productDTO));
             await _repository.SaveAsync();
             return RedirectToAction("Index");
         }
@@ -69,12 +92,17 @@ namespace SM.WebUI.Areas.Admin.Controllers
         {
             try
             {
+                ViewBag.CategoryList = (await _repository.CategoryRepository.GetAllCategorysAsync()).Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString()
+                });
                 var product = await _repository.ProductRepository.GetProductByIdAsync(id);
                 if (product == null)
                 {
                     return NotFound();
                 }
-                return View(product);
+                return View(_mapper.Map<ProductCreateDTO>(product));
             }
             catch (Exception ex)
             {
@@ -82,18 +110,7 @@ namespace SM.WebUI.Areas.Admin.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Delete(Product product)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(product);
-            }
-            _repository.ProductRepository.Delete(product);
-            await _repository.SaveAsync();
-            return RedirectToAction("Index");
-        }
-
+      
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -110,7 +127,7 @@ namespace SM.WebUI.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Something went wrong inside GetOwnerById action: {ex.Message}");
+                return StatusCode(500, $"Something went wrong inside GetProductById action: {ex.Message}");
             }
         }
     }

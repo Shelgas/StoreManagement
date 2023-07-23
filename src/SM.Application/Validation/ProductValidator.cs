@@ -16,6 +16,7 @@ namespace SM.Application.Validation
             RuleFor(x => x.Name).NotEmpty().NotNull().Length(3, 255);
             RuleFor(x => x.Price).NotEmpty().NotNull();
             RuleFor(x => x.BrandName).NotEmpty().NotNull();
+        
         }
     }
 }

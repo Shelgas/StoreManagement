@@ -1,5 +1,6 @@
 using SM.Infrastructure;
 using SM.Application;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SM.WebUI
 {
@@ -14,6 +15,12 @@ namespace SM.WebUI
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddInfastructure(config);
+
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             builder.Services.AddApplication();
                 
             var app = builder.Build();

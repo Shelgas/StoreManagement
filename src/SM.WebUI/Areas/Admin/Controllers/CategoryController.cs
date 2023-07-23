@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using SM.Application.Interfaces;
+using SM.Application.Models.DTO;
 using SM.Domain.Entities;
 
 namespace SM.WebUI.Areas.Admin.Controllers
@@ -8,10 +10,12 @@ namespace SM.WebUI.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
 
-        public CategoryController(IRepositoryWrapper repository)
+        public CategoryController(IRepositoryWrapper repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
         public async Task<IActionResult> Index()
         {
@@ -19,13 +23,13 @@ namespace SM.WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Category category)
+        public async Task<IActionResult> Create(CategoryDTO categoryDTO)
         {
             if (!ModelState.IsValid)
             {
-                return View(category);
+                return View(categoryDTO);
             }
-            _repository.CategoryRepository.Add(category);
+            _repository.CategoryRepository.Add(_mapper.Map<Category>(categoryDTO));
             await _repository.SaveAsync();
             return RedirectToAction("Index");
         }
@@ -37,13 +41,13 @@ namespace SM.WebUI.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(Category category)
+        public async Task<IActionResult> Edit(CategoryDTO categoryDTO)
         {
             if (!ModelState.IsValid)
             {
-                return View(category);
+                return View(categoryDTO);
             }
-            _repository.CategoryRepository.Update(category);
+            _repository.CategoryRepository.Update(_mapper.Map<Category>(categoryDTO));
             await _repository.SaveAsync();
             return RedirectToAction("Index");
         }
@@ -58,24 +62,12 @@ namespace SM.WebUI.Areas.Admin.Controllers
                 {
                     return NotFound();
                 }
-                return View(category);
+                return View(_mapper.Map<CategoryDTO>(category));
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Something went wrong inside GetOwnerById action: {ex.Message}");
             }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(Category category)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(category);
-            }
-            _repository.CategoryRepository.Delete(category);
-            await _repository.SaveAsync();
-            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -94,7 +86,7 @@ namespace SM.WebUI.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Something went wrong inside GetOwnerById action: {ex.Message}");
+                return StatusCode(500, $"Something went wrong inside GetCategoryById action: {ex.Message}");
             }
         }
     }
